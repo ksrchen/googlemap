@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="xChangeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MSACode" Type="char" MaxLength="4" />
+          <Property Name="CountryCode" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="StateProvCode" Type="char" MaxLength="2" />
+          <Property Name="CountyRegionName" Type="varchar" MaxLength="50" />
+          <Property Name="CityName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address1" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Address1SoundexCode" Type="char" MaxLength="4" />
+          <Property Name="Address2" Type="varchar" MaxLength="100" />
+          <Property Name="PostalZipCode" Type="char" MaxLength="10" />
+          <Property Name="PostalCodeExtension" Type="char" MaxLength="4" />
+          <Property Name="Latitude" Type="decimal" Precision="19" Scale="16" />
+          <Property Name="Longitude" Type="decimal" Precision="19" Scale="16" />
+          <Property Name="AddrStandardCode" Type="char" MaxLength="2" />
+          <Property Name="msrepl_tran_version" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="DateLastUpdated" Type="datetime" />
+          <Property Name="Version" Type="varchar" MaxLength="25" />
+          <Property Name="MatchCode" Type="varchar" MaxLength="15" />
+          <Property Name="GeocodeType" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="EnterpriseAddressID" Type="int" />
+          <Property Name="BuildingNumber" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="PropertyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+          <Property Name="AddressID" Type="int" Nullable="false" />
+          <Property Name="DateApproved" Type="datetime" />
+          <Property Name="DateEntered" Type="datetime" Nullable="false" />
+          <Property Name="DateLastModified" Type="datetime" />
+          <Property Name="ParcelTaxNum" Type="varchar" MaxLength="255" />
+          <Property Name="PropertyDesc" Type="varchar" MaxLength="150" />
+          <Property Name="PropertyName" Type="varchar" MaxLength="50" />
+          <Property Name="PropertySoundexCode" Type="char" MaxLength="4" />
+          <Property Name="msrepl_tran_version" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Association Name="fkPropertyToAddress">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="Property" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressID" />
+            </Principal>
+            <Dependent Role="Property">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="xChangeModelStoreContainer">
+          <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Property" EntityType="Self.Property" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fkPropertyToAddress" Association="Self.fkPropertyToAddress">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="Property" EntitySet="Property" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="xChangeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MSACode" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="CountryCode" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="StateProvCode" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="CountyRegionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CityName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address1SoundexCode" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PostalZipCode" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="PostalCodeExtension" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="Latitude" Type="Decimal" Precision="19" Scale="16" />
+          <Property Name="Longitude" Type="Decimal" Precision="19" Scale="16" />
+          <Property Name="AddrStandardCode" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="msrepl_tran_version" Type="Guid" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateLastUpdated" Type="DateTime" Precision="3" />
+          <Property Name="Version" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="MatchCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="GeocodeType" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="EnterpriseAddressID" Type="Int32" />
+          <Property Name="BuildingNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Properties" Relationship="Self.fkPropertyToAddress" FromRole="Address" ToRole="Property" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="PropertyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <Property Name="AddressID" Type="Int32" Nullable="false" />
+          <Property Name="DateApproved" Type="DateTime" Precision="3" />
+          <Property Name="DateEntered" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateLastModified" Type="DateTime" Precision="3" />
+          <Property Name="ParcelTaxNum" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PropertyDesc" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="PropertyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PropertySoundexCode" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="msrepl_tran_version" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Address" Relationship="Self.fkPropertyToAddress" FromRole="Property" ToRole="Address" />
+        </EntityType>
+        <Association Name="fkPropertyToAddress">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="Property" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressID" />
+            </Principal>
+            <Dependent Role="Property">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="xChangeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="Self.Address" />
+          <EntitySet Name="Properties" EntityType="Self.Property" />
+          <AssociationSet Name="fkPropertyToAddress" Association="Self.fkPropertyToAddress">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Property" EntitySet="Properties" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="xChangeModelStoreContainer" CdmEntityContainer="xChangeEntities">
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="xChangeModel.Address">
+              <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="MSACode" ColumnName="MSACode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="StateProvCode" ColumnName="StateProvCode" />
+                <ScalarProperty Name="CountyRegionName" ColumnName="CountyRegionName" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address1SoundexCode" ColumnName="Address1SoundexCode" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="PostalZipCode" ColumnName="PostalZipCode" />
+                <ScalarProperty Name="PostalCodeExtension" ColumnName="PostalCodeExtension" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="AddrStandardCode" ColumnName="AddrStandardCode" />
+                <ScalarProperty Name="msrepl_tran_version" ColumnName="msrepl_tran_version" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="MatchCode" ColumnName="MatchCode" />
+                <ScalarProperty Name="GeocodeType" ColumnName="GeocodeType" />
+                <ScalarProperty Name="EnterpriseAddressID" ColumnName="EnterpriseAddressID" />
+                <ScalarProperty Name="BuildingNumber" ColumnName="BuildingNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Properties">
+            <EntityTypeMapping TypeName="xChangeModel.Property">
+              <MappingFragment StoreEntitySet="Property">
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="DateApproved" ColumnName="DateApproved" />
+                <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+                <ScalarProperty Name="DateLastModified" ColumnName="DateLastModified" />
+                <ScalarProperty Name="ParcelTaxNum" ColumnName="ParcelTaxNum" />
+                <ScalarProperty Name="PropertyDesc" ColumnName="PropertyDesc" />
+                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+                <ScalarProperty Name="PropertySoundexCode" ColumnName="PropertySoundexCode" />
+                <ScalarProperty Name="msrepl_tran_version" ColumnName="msrepl_tran_version" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
