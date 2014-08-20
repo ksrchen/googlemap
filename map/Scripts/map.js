@@ -40,6 +40,10 @@ function initialize() {
 }
 
 function boundsChanged(e) {
+    refresh();
+}
+
+function refresh() {
 
     var bound = map.getBounds();
 
@@ -54,13 +58,16 @@ function boundsChanged(e) {
         northEast.lng() + ' ' + northEast.lat() +
         '))';
 
-
-
-    //kmlLayer.setUrl('http://kmlservice.azurewebsites.net/api/property?polygon=POLYGON%20((-116.99398817578128%2034.632786418164144,%20-119.49337782421878%2034.632786418164144,%20-119.49337782421878%2033.46768062957883,%20-116.99398817578128%2033.46768062957883,%20-116.99398817578128%2034.632786418164144))');
-    var url = 'http://kmlservice.azurewebsites.net/api/property?polygon=' + encodeURIComponent(polygon);
+    var url = 'http://kmlservice.azurewebsites.net/api/property?polygon=' + encodeURIComponent(polygon) + '&propertyType=' + $("#propertyType").val();
     kmlLayer.setUrl(url);
     $("#legend").text("Refreshing....");
     $("#legend").fadeIn();
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+$(function () {
+    $("#propertyType").change(function () {
+        refresh();
+    });
+});
