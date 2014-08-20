@@ -32,7 +32,7 @@ function initialize() {
         if (kmlLayer.status === google.maps.KmlLayerStatus.OK) {
             $("#legend").fadeOut();
         } else {
-            $("#legend").text("Too many matches...please zoom in in narrow the search")
+            $("#legend").text("Too many matches...please zoom in to narrow your search")
         }
     });
 
