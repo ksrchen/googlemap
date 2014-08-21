@@ -1,5 +1,8 @@
 ﻿var map;
 var kmlLayer;
+var drawingManager;
+var selectedShape;
+
 function initialize() {
     var mapOptions = {
         zoom: 10,
@@ -36,7 +39,29 @@ function initialize() {
         }
     });
 
+    drawingManager = new google.maps.drawing.DrawingManager({
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_RIGHT,
+            drawingModes: [
+              google.maps.drawing.OverlayType.POLYGON,
+            ]
+        }
+    });
 
+    drawingManager.setMap(map);
+
+    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (e) {
+        if (e.type != google.maps.drawing.OverlayType.MARKER) {
+            // Switch back to non-drawing mode after drawing a shape.
+            drawingManager.setDrawingMode(null);
+
+            var newShape = e.overlay;
+            newShape.type = e.type;
+            setSelection(newShape);
+            refresh();
+        }
+    });
 }
 
 function boundsChanged(e) {
@@ -44,30 +69,62 @@ function boundsChanged(e) {
 }
 
 function refresh() {
-
+    var polygon;
     var bound = map.getBounds();
 
     var northEast = bound.getNorthEast();
     var southWest = bound.getSouthWest();
 
-    var polygon = 'POLYGON((' +
-        northEast.lng() + ' ' + northEast.lat() + ',' +
-        southWest.lng() + ' ' + northEast.lat() + ',' +
-        southWest.lng() + ' ' + southWest.lat() + ',' +
-        northEast.lng() + ' ' + southWest.lat() + ',' +
-        northEast.lng() + ' ' + northEast.lat() +
-        '))';
+    if (selectedShape) {
+        polygon = 'POLYGON((';
+        var path = selectedShape.getPath();
+        path.forEach(function (el, index) {
+            polygon = polygon + el.lng() + ' ' + el.lat() + ','
+        })
 
+        var firstPoint = path.getAt(0);
+        polygon = polygon + firstPoint.lng() + ' ' + firstPoint.lat();
+
+        polygon = polygon + '))';
+
+    } else {
+        polygon = 'POLYGON((' +
+            northEast.lng() + ' ' + northEast.lat() + ',' +
+            southWest.lng() + ' ' + northEast.lat() + ',' +
+            southWest.lng() + ' ' + southWest.lat() + ',' +
+            northEast.lng() + ' ' + southWest.lat() + ',' +
+            northEast.lng() + ' ' + northEast.lat() +
+            '))';
+    }
     var url = 'http://kmlservice.azurewebsites.net/api/property?polygon=' + encodeURIComponent(polygon) + '&propertyType=' + $("#propertyType").val();
     kmlLayer.setUrl(url);
     $("#legend").text("Refreshing....");
     $("#legend").fadeIn();
 }
 
+function setSelection(shape) {
+    if (selectedShape) {
+        selectedShape.setMap(null);
+    }
+    selectedShape = shape;
+}
+
 google.maps.event.addDomListener(window, 'load', initialize);
 
 $(function () {
     $("#propertyType").change(function () {
+        refresh();
+    });
+
+    $("#polygonTool").click(function () {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYGON);
+    });
+
+    $("#handTool").click(function () {
+        drawingManager.setDrawingMode(null);
+    });
+    $("#clear").click(function () {
+        setSelection(null);
         refresh();
     });
 });

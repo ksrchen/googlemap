@@ -22,12 +22,13 @@
             position: absolute;
             margin-top: 40px;
             margin-left: 100px;
-            background-color :lightgray;            
+            /*background-color :lightgray;*/            
             z-index: 999;
+            padding:10px;
         }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqzF1sDO3Z6YAdAUM4fs1C6eHC7Ve7rV8"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqzF1sDO3Z6YAdAUM4fs1C6eHC7Ve7rV8&libraries=drawing"></script>
     <script src="~/Scripts/map.js"></script>
 </head>
 <body>
@@ -39,6 +40,11 @@
             <option value="1">For Lease</option>
             <option value="">All</option>
         </select>
+    
+        <div>Zone Search</div>
+        <button id="polygonTool">Polygon Tool</button>
+        <button id="handTool">Hand Tool</button>
+        <button id="clear">Clear</button>
     </div>
     <div id="map-canvas"></div>
 </body>
