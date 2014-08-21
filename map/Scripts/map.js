@@ -5,7 +5,7 @@ var selectedShape;
 
 function initialize() {
     var mapOptions = {
-        zoom: 10,
+        zoom: 13,
         center: new google.maps.LatLng(34.052235, -118.243683)
     };
     map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -20,7 +20,6 @@ function initialize() {
     });
 
     kmlLayer = new google.maps.KmlLayer({
-        url: 'http://kmldata.azurewebsites.net/property.xml',
         preserveViewport: true,
     });
     kmlLayer.setMap(map);
@@ -35,7 +34,7 @@ function initialize() {
         if (kmlLayer.status === google.maps.KmlLayerStatus.OK) {
             $("#legend").fadeOut();
         } else {
-            $("#legend").text("Too many matches...please zoom in to narrow your search")
+            $("#legend").text("Query took too long...please narrow your search")
         }
     });
 
@@ -46,7 +45,8 @@ function initialize() {
             drawingModes: [
               google.maps.drawing.OverlayType.POLYGON,
             ]
-        }
+        },
+        polygonOptions: { clickable: false }
     });
 
     drawingManager.setMap(map);
@@ -96,7 +96,7 @@ function refresh() {
             northEast.lng() + ' ' + northEast.lat() +
             '))';
     }
-    var url = 'http://kmlservice.azurewebsites.net/api/property?polygon=' + encodeURIComponent(polygon) + '&propertyType=' + $("#propertyType").val();
+    var url = 'http://kmlservice.azurewebsites.net/api/property?polygon=' + encodeURIComponent(polygon) + '&propertyType=' + $("#propertyType").val() + "&timestamp=" + (new Date).getMilliseconds();
     kmlLayer.setUrl(url);
     $("#legend").text("Refreshing....");
     $("#legend").fadeIn();
