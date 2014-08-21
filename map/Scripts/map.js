@@ -40,7 +40,7 @@ function initialize() {
     });
 
     drawingManager = new google.maps.drawing.DrawingManager({
-        drawingControl: true,
+        drawingControl: false,
         drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_RIGHT,
             drawingModes: [
